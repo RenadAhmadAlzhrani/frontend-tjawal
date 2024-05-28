@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import "./App.css"
 import { Home } from "./pages/home"
 import { Dashboard } from "./pages/dashboard"
-import { createContext } from "react"
+import { createContext, useEffect } from "react"
 import { useState } from "react"
 import { DecodedUser, Product} from "./types"
 import { ProductDetails } from "./pages/productDetaills"
@@ -48,6 +48,11 @@ type GlobalContextType = {
   handleDeleteFromCart:(id:string)=>void
   handleStoreUser:(user :DecodedUser) => void
 }
+type GlobalState={
+  cart:Product[]
+  user:DecodedUser |null
+
+}
 export const GlobalContext = createContext<GlobalContextType | null> (null)
 
 function App() {
@@ -55,9 +60,21 @@ function App() {
     cart: [],
     user : null
   })
+
+  useEffect(()=>{
+   const user= localStorage.getItem("user")
+   if(user){
+    const decodedUser=JSON.parse(user)
+   
+   setState({
+    ...state,
+    user:decodedUser
+   })
+   }
+  },[])
   const handleAddToCart = (product: Product) =>{
-    const isDuplicated= state.cart.find((cartItem)=>cartItem.id===product.id)
-    if(isDuplicated) return
+    // const isDuplicated= state.cart.find((cartItem)=>cartItem.id===product.id)
+    // if(isDuplicated) return
     setState({
       ...state,
       cart: [...state.cart, product]
@@ -65,10 +82,13 @@ function App() {
   }
 
   const handleDeleteFromCart = (id : string) => {
-    const filteredCart= state.cart.filter((item)=>item.id !==id)
+    const Cart=state.cart
+    const index= state.cart.findIndex((item)=>item.id ===id)
+    Cart.splice(index,1)
+   // const filteredCart= state.cart.filter((item)=>item.id !==id)
     setState({
       ...state,
-      cart:filteredCart
+      cart:Cart
     })
   }
 

@@ -7,16 +7,16 @@ import { Input } from "../components/ui/input"
 import { reshapeUser } from "../lib/utils"
 import { GlobalContext } from "../App"
 import api from "../api"
+import { decode } from "punycode"
 
 export function Login() {
   const navigate = useNavigate()
   const context = useContext(GlobalContext)
   if (!context) throw Error("Context is missing")
-  const { handleStoreUser } = context
-
-  const [user, setUser] = useState({
-    email: "",
-    password: ""
+  const { handleStoreUser} = context
+  const [user,setUser]=useState({
+    emil:"",
+    password:"",
   })
 
   const handleLogin = async () => {
@@ -42,15 +42,18 @@ export function Login() {
 
     const token = await handleLogin()
     if (token) {
-      const decodedToken = jwt(token)
-      const user = reshapeUser(decodedToken)
       localStorage.setItem("token", token)
-      localStorage.setItem("user", JSON.stringify(user))
-
-      handleStoreUser(user)
+      const decodedToken =jwt(token)
+      const user= reshapeUser(decodedToken)
+      localStorage.setItem("user",JSON.stringify ( user))
+        handleStoreUser(user)
+      
       navigate("/")
     }
   }
+
+
+  
   return (
     <div>
       <h3>LOGIN</h3>

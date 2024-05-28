@@ -8,7 +8,7 @@ export type Product = {
   name: string
   categoryId: number
   image:string
-  price: boolean
+  price: number
 
 }
 

@@ -39,7 +39,16 @@ export function ProductDetails() {
   return (
     <>
       <NavBar />
-      <div>
+      <div  className="flex justify-center items-center flex-col">
+        <p >Discover the Alluring World of Classic Cars and Enjoy an Epic Driving Experience!
+
+           We offer you a remarkable fleet of exquisite vintage and classic cars, meticulously maintained to provide you with a journey filled with elegance and authenticity.
+
+            Whether it's your wedding celebration or a special corporate event,
+               we will elevate the elegance with our unique car selections. Enjoy exceptional moments and capture the most sophisticated photos.
+
+                  Don't miss the chance to live in the past with all its sophistication.
+                              Book your classic car now and be the star of the day!</p>
         <h3>{product?.name}</h3>
         <img src={product?.image} />
       </div>

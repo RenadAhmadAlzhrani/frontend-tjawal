@@ -3,8 +3,15 @@ import { useState } from "react"
 import api from "../api"
 import { Button } from "../components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Category, Product, User } from "@/types"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Product, User } from "@/types"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table"
 import { NavBar } from "@/components/navbar"
 import { EditDialog } from "@/components/editDialog"
 
@@ -29,7 +36,6 @@ export function Dashboard() {
     await deleteProduct(id)
     queryClient.invalidateQueries({ queryKey: ["products"] })
   }
-  
 
   const deleteProduct = async (id: string) => {
     try {
@@ -43,7 +49,7 @@ export function Dashboard() {
 
   const postProduct = async () => {
     try {
-      const res = await api.post("/products",product)
+      const res = await api.post("/products", product)
       return res.data
     } catch (error) {
       console.error(error)
@@ -66,8 +72,6 @@ export function Dashboard() {
     }
   }
 
-
-
   const getUsers = async () => {
     try {
       const token = localStorage.getItem("token")
@@ -89,7 +93,6 @@ export function Dashboard() {
     queryFn: getProducts
   })
 
-
   // const { data: categories, error: catError } = useQuery<Category[]>({
   //   queryKey: ["categories"],
   //   queryFn: getCategory
@@ -101,7 +104,7 @@ export function Dashboard() {
 
   return (
     <>
-    <NavBar/>
+      <NavBar />
       <form className="mt-20 w-1/3 mx-auto" onSubmit={handleSubmit}>
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">ADD NEW PRODUCT</h4>
         <Input
@@ -112,7 +115,7 @@ export function Dashboard() {
           onChange={handleChange}
         />
 
-<Input
+        <Input
           name="price"
           className="mt-4"
           type="number"
@@ -127,13 +130,13 @@ export function Dashboard() {
           placeholder="Category"
           onChange={handleChange}
         />
-         <Input
+        <Input
           name="image"
           type="text"
           className="mt-4"
           placeholder="Image"
           onChange={handleChange}
-          />
+        />
 
         <div className="flex justify-evenly ">
           <Button type="reset" className="mt-4">
@@ -147,39 +150,29 @@ export function Dashboard() {
       <div>
         <h1 className="scroll-m-20 text-2xl font-somibId tracking-tight"> Products</h1>
         <Table>
-        <Table>
-      <TableHeader>
-        <TableRow>
-          
-          <TableHead>Name</TableHead>
-          <TableHead>Price</TableHead>
-          <TableHead>CategoryId</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {products?.map((product) => (
-          <TableRow key={product.id}>
-           
-            <TableCell className="text-left">{product.name}</TableCell>
-            <TableCell className="text-left">{product.price}</TableCell>
-            <TableCell  className="text-left">{product.categoryId}</TableCell>
-            <TableCell  className="text-left">
-                
-                <Button variant="destructive" 
-                onClick = { ()=> handleDeleteProduct (product.id)}>x</Button>
-            </TableCell>
-            <TableCell  className="text-left">
-              <EditDialog product= {product} />
-              </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-
-    </Table>
-   
-
-
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>CategoryId</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {products?.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell className="text-left">{product.name}</TableCell>
+                  <TableCell className="text-left">{product.price}</TableCell>
+                  <TableCell className="text-left">{product.categoryId}</TableCell>
+                  <TableCell className="text-left">
+                    <Button onClick={() => handleDeleteProduct(product.id)}>x</Button>
+                    <EditDialog product={product} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Table>
       </div>
     </>

@@ -17,18 +17,20 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react"
 import { GlobalContext } from "@/App"
 import { Link, useSearchParams } from "react-router-dom"
 import { Input } from "@/components/ui/input"
+import Hero from "@/components/hero"
+import Footer from "@/components/footer"
 
 export function Home() {
+  const context = useContext(GlobalContext)
+  if (!context) throw Error("context is missing")
+
+  const { handleAddToCart } = context
+
   const [searchParams, setSearchParams] = useSearchParams()
   const defaultSearch = searchParams.get("searchBy") || ""
 
   const [searchBy, setSearchBy] = useState(defaultSearch)
   const queryClient = useQueryClient()
-
-  const context = useContext(GlobalContext)
-  if (!context) throw Error("Context is missing")
-
-  const { handleAddToCart } = context
 
   const getProducts = async () => {
     try {
@@ -61,8 +63,7 @@ export function Home() {
   }
 
   return (
-    <>
-      <NavBar />
+    <><Hero/>
       <div>
         <form className=" flex gap-4 w-full md:w-1/2 mx-auto mb-10">
           <Input
@@ -74,30 +75,35 @@ export function Home() {
           <Button type="submit">Search</Button>
         </form>
       </div>
-      <section className="flex flex-col  justify-center md:flex-row gap-4 justify-between max-w-6xl mx-auto">
+
+      <section className="mt-16 grid grid-cols-3 gap-4 max-w6xl mx-50" id="product_item">
         {data?.length === 0 && <p> No product found</p>}
         {data?.map((product) => (
-          <Card key={product.id} className="w-[300px]">
+          <Card key={product.id} className="w-[300px]" id="hover_content">
+
             <CardHeader>
               <img alt={product.name} src={product.image} className="mb-4 h-48 object-contain" />
               <CardTitle>{product.name}</CardTitle>
-              <CardTitle>{product.price}</CardTitle>
-              <CardDescription>Some Description here</CardDescription>
+              
+            
             </CardHeader>
             <CardContent>
-              <p>Card Content Here</p>
+            <CardTitle className="font-size:30px;" >{product.price} sr </CardTitle>
             </CardContent>
             <CardFooter>
               <Button variant="outline">
                 <Link to={`/products/${product.id}`}>Details </Link>
               </Button>
+             
               <Button className="w-full" onClick={() => handleAddToCart(product)}>
                 Add to cart
               </Button>
             </CardFooter>
           </Card>
         ))}
+       
       </section>
+       <footer> <Footer/> </footer>
       {error && <p className="text-red-500">{error.message}</p>}
     </>
   )
