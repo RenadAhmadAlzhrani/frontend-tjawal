@@ -20,7 +20,7 @@ export function NavBar() {
 
         <div className="flex items-center">
           <div className="w-12 h-12  flex items-center justify-center mr-4">
-            <img src="../img/tt.jpg" alt="logo" className="h-35 w-35 text-white" />
+            <img src="img/tt.jpg" alt="logo" className="h-35 w-35 text-white" />
           </div>
           <span className="text-2xl font-bold text-[#6366F1]">TAJWAL</span>
         </div>
